@@ -1,3 +1,4 @@
+local _2afile_2a = "fnl/lililine.fnl"
 local _0_0
 do
   local name_0_ = "lililine"
@@ -20,11 +21,11 @@ local autoload = (require("aniseed.autoload")).autoload
 local function _1_(...)
   local ok_3f_0_, val_0_ = nil, nil
   local function _1_()
-    return {require("aniseed.core"), require("util")}
+    return {require("aniseed.core"), require("lililine.util")}
   end
   ok_3f_0_, val_0_ = pcall(_1_)
   if ok_3f_0_ then
-    _0_0["aniseed/local-fns"] = {["require-macros"] = {macros = true}, require = {core = "aniseed.core", util = "util"}}
+    _0_0["aniseed/local-fns"] = {["require-macros"] = {macros = true}, require = {core = "aniseed.core", util = "lililine.util"}}
     return val_0_
   else
     return print(val_0_)
@@ -192,35 +193,63 @@ do
       else
       group = nil
       end
-      local function _3_()
-        if ok then
-          local _3_0 = type(widget)
-          if (_3_0 == "string") then
-            return widget
-          elseif (_3_0 == "table") then
-            local _let_1_ = widget
-            local color = _let_1_["color"]
-            local text = _let_1_["text"]
-            do
-              local it = color
-              if it then
-                local _4_
-                if core["string?"](highlight) then
-                  _4_ = highlight
-                else
-                  _4_ = group
+      local decorate
+      do
+        local v_0_1
+        do
+          local v_0_2
+          local function decorate0()
+            local _3_0 = type(widget)
+            if (_3_0 == "string") then
+              return widget
+            elseif (_3_0 == "table") then
+              local _let_1_ = widget
+              local color = _let_1_["color"]
+              local text = _let_1_["text"]
+              if group then
+                do
+                  local it = color
+                  if it then
+                    util.color["add-group"](group, it)
+                  end
                 end
-                util.color["add-group"](_4_, it)
+                return text
+              else
+                return " Missing highlight group "
               end
             end
-            return text
           end
-        else
-          util.color["add-group"](group, util.color["get-group"]("ErrorMsg"))
-          return (" " .. widget .. " ")
+          v_0_2 = decorate0
+          _0_0["decorate"] = v_0_2
+          v_0_1 = v_0_2
         end
+        local t_0_ = (_0_0)["aniseed/locals"]
+        t_0_["decorate"] = v_0_1
+        decorate = v_0_1
       end
-      return (" " .. _3_())
+      local widget_drawn
+      do
+        local v_0_1
+        do
+          local v_0_2
+          if ok then
+            local it = decorate()
+            if it then
+              v_0_2 = it
+            else
+              v_0_2 = "your code broke"
+            end
+          else
+          v_0_2 = nil
+          end
+          _0_0["widget-drawn"] = v_0_2
+          v_0_1 = v_0_2
+        end
+        local t_0_ = (_0_0)["aniseed/locals"]
+        t_0_["widget-drawn"] = v_0_1
+        widget_drawn = v_0_1
+      end
+      return (" " .. widget_drawn)
     end
     v_0_0 = draw0
     _0_0["draw"] = v_0_0

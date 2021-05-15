@@ -1,8 +1,10 @@
-(module util
-  {autoload {core aniseed.core
-             color util.color}}
-  {:core core
-   :color color})
+(module lililine.util
+  {require {core aniseed.core
+            color lililine.util.color}})
+
+(def color color)
+
+(defn dbg [x] (print (.. (tostring x) " => " (vim.inspect x))) x)
 
 (defn concat [xs]
   "Concatenates a list of lists."

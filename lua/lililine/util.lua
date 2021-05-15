@@ -1,13 +1,14 @@
+local _2afile_2a = "fnl/lililine/util.fnl"
 local _0_0
 do
-  local name_0_ = "util"
+  local name_0_ = "lililine.util"
   local module_0_
   do
     local x_0_ = package.loaded[name_0_]
     if ("table" == type(x_0_)) then
       module_0_ = x_0_
     else
-      module_0_ = {color = color, core = core}
+      module_0_ = {}
     end
   end
   module_0_["aniseed/module"] = name_0_
@@ -16,15 +17,15 @@ do
   package.loaded[name_0_] = module_0_
   _0_0 = module_0_
 end
-local autoload = (require("aniseed.autoload")).autoload
+local autoload = (require("lililine.aniseed.autoload")).autoload
 local function _1_(...)
   local ok_3f_0_, val_0_ = nil, nil
   local function _1_()
-    return {autoload("util.color"), autoload("aniseed.core")}
+    return {require("lililine.util.color"), require("lililine.aniseed.core")}
   end
   ok_3f_0_, val_0_ = pcall(_1_)
   if ok_3f_0_ then
-    _0_0["aniseed/local-fns"] = {autoload = {color = "util.color", core = "aniseed.core"}}
+    _0_0["aniseed/local-fns"] = {require = {color = "lililine.util.color", core = "lililine.aniseed.core"}}
     return val_0_
   else
     return print(val_0_)
@@ -34,8 +35,37 @@ local _local_0_ = _1_(...)
 local color = _local_0_[1]
 local core = _local_0_[2]
 local _2amodule_2a = _0_0
-local _2amodule_name_2a = "util"
+local _2amodule_name_2a = "lililine.util"
 do local _ = ({nil, _0_0, nil, {{}, nil, nil, nil}})[2] end
+local color0
+do
+  local v_0_
+  do
+    local v_0_0 = color
+    _0_0["color"] = v_0_0
+    v_0_ = v_0_0
+  end
+  local t_0_ = (_0_0)["aniseed/locals"]
+  t_0_["color"] = v_0_
+  color0 = v_0_
+end
+local dbg
+do
+  local v_0_
+  do
+    local v_0_0
+    local function dbg0(x)
+      print((tostring(x) .. " => " .. vim.inspect(x)))
+      return x
+    end
+    v_0_0 = dbg0
+    _0_0["dbg"] = v_0_0
+    v_0_ = v_0_0
+  end
+  local t_0_ = (_0_0)["aniseed/locals"]
+  t_0_["dbg"] = v_0_
+  dbg = v_0_
+end
 local concat
 do
   local v_0_

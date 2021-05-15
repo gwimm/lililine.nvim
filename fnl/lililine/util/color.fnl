@@ -1,6 +1,6 @@
-(module util.color
+(module lililine.util.color
   {autoload {core aniseed.core}
-   require {util util}
+   require {util lililine.util}
    require-macros [macros]})
 
 (def attr-list [:bold :italic :underline :undercurl :strikethrough :reverse

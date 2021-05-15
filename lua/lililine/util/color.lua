@@ -1,6 +1,7 @@
+local _2afile_2a = "fnl/lililine/util/color.fnl"
 local _0_0
 do
-  local name_0_ = "util.color"
+  local name_0_ = "lililine.util.color"
   local module_0_
   do
     local x_0_ = package.loaded[name_0_]
@@ -16,15 +17,15 @@ do
   package.loaded[name_0_] = module_0_
   _0_0 = module_0_
 end
-local autoload = (require("aniseed.autoload")).autoload
+local autoload = (require("lililine.aniseed.autoload")).autoload
 local function _1_(...)
   local ok_3f_0_, val_0_ = nil, nil
   local function _1_()
-    return {autoload("aniseed.core"), require("util")}
+    return {autoload("lililine.aniseed.core"), require("lililine.util")}
   end
   ok_3f_0_, val_0_ = pcall(_1_)
   if ok_3f_0_ then
-    _0_0["aniseed/local-fns"] = {["require-macros"] = {macros = true}, autoload = {core = "aniseed.core"}, require = {util = "util"}}
+    _0_0["aniseed/local-fns"] = {["require-macros"] = {macros = true}, autoload = {core = "lililine.aniseed.core"}, require = {util = "lililine.util"}}
     return val_0_
   else
     return print(val_0_)
@@ -34,7 +35,7 @@ local _local_0_ = _1_(...)
 local core = _local_0_[1]
 local util = _local_0_[2]
 local _2amodule_2a = _0_0
-local _2amodule_name_2a = "util.color"
+local _2amodule_name_2a = "lililine.util.color"
 do local _ = ({nil, _0_0, nil, {{nil}, nil, nil, nil}})[2] end
 local attr_list
 do

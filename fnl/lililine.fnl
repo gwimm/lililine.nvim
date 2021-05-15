@@ -1,6 +1,6 @@
 (module lililine
   {require {core aniseed.core
-            util util}
+            util lililine.util}
    require-macros [macros]})
 
 (def lines {:status [[{:provider "unconfigured line"}]]})
@@ -38,15 +38,21 @@
          :highlight highlight} (core.get-in lines [name section-index component-index])
         (ok widget) (safe-call provider)
         group (when (core.string? highlight) highlight)]
-    (.. " " ; notice the obligatory `(.. " " x)` vim is stupid
-        (if ok
-          (match (type widget)
-            :string widget
-            :table (let [{:text text :color color} widget]
-                     (aif color (util.color.add-group (if (core.string? highlight) highlight group) it))
-                     text))
-          (do (util.color.add-group group (util.color.get-group :ErrorMsg))
-              (.. " " widget " "))))))
+
+    (defn decorate []
+      (match (type widget)
+        :string widget
+        :table (let [{:text text :color color} widget]
+                 (if group (do (aif color (util.color.add-group group it)) text)
+                   " Missing highlight group "))))
+
+    (def widget-drawn
+        (if ok (aif (decorate) it "your code broke")))
+          ; (do (util.color.add-group group (util.color.get-group :ErrorMsg))
+          ;     (.. " " widget " ")))
+
+    ; notice the obligatory `(.. " " x)` vim is stupid
+    (.. " " widget-drawn)))
 
 (defn async-register [f] (vim.loop.new_async (vim.schedule_wrap f)))
 

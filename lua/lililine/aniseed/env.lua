@@ -1,3 +1,4 @@
+local _2afile_2a = "fnl/aniseed/env.fnl"
 local _0_0
 do
   local name_0_ = "lililine.aniseed.env"
@@ -20,18 +21,21 @@ local autoload = (require("lililine.aniseed.autoload")).autoload
 local function _1_(...)
   local ok_3f_0_, val_0_ = nil, nil
   local function _1_()
-    return {autoload("lililine.aniseed.nvim")}
+    return {autoload("lililine.aniseed.compile"), autoload("lililine.aniseed.fennel"), autoload("lililine.aniseed.fs"), autoload("lililine.aniseed.nvim")}
   end
   ok_3f_0_, val_0_ = pcall(_1_)
   if ok_3f_0_ then
-    _0_0["aniseed/local-fns"] = {autoload = {nvim = "lililine.aniseed.nvim"}}
+    _0_0["aniseed/local-fns"] = {autoload = {compile = "lililine.aniseed.compile", fennel = "lililine.aniseed.fennel", fs = "lililine.aniseed.fs", nvim = "lililine.aniseed.nvim"}}
     return val_0_
   else
     return print(val_0_)
   end
 end
 local _local_0_ = _1_(...)
-local nvim = _local_0_[1]
+local compile = _local_0_[1]
+local fennel = _local_0_[2]
+local fs = _local_0_[3]
+local nvim = _local_0_[4]
 local _2amodule_2a = _0_0
 local _2amodule_name_2a = "lililine.aniseed.env"
 do local _ = ({nil, _0_0, nil, {{}, nil, nil, nil}})[2] end
@@ -41,13 +45,6 @@ do
   local t_0_ = (_0_0)["aniseed/locals"]
   t_0_["config-dir"] = v_0_
   config_dir = v_0_
-end
-local state
-do
-  local v_0_ = (((_0_0)["aniseed/locals"]).state or {["path-added?"] = false})
-  local t_0_ = (_0_0)["aniseed/locals"]
-  t_0_["state"] = v_0_
-  state = v_0_
 end
 local quiet_require
 do
@@ -79,14 +76,20 @@ do
       else
         opts0 = {}
       end
-      if ((false ~= opts0.compile) or os.getenv("ANISEED_ENV_COMPILE")) then
-        local compile = require("lililine.aniseed.compile")
-        local fennel = require("lililine.aniseed.fennel")
-        if not state["path-added?"] then
-          fennel["add-path"]((config_dir .. "/?.fnl"))
-          state["path-added?"] = true
+      local glob_expr = "**/*.fnl"
+      local fnl_dir = (opts0.input or (config_dir .. "/fnl"))
+      local lua_dir = (opts0.output or (config_dir .. "/lua"))
+      package.path = (package.path .. ";" .. lua_dir .. "/?.lua")
+      local function _3_(path)
+        if fs["macro-file-path?"](path) then
+          return path
+        else
+          return string.gsub(path, ".fnl$", ".lua")
         end
-        compile.glob("**/*.fnl", (config_dir .. (opts0.input or "/fnl")), (config_dir .. (opts0.output or "/lua")), opts0)
+      end
+      if (((false ~= opts0.compile) or os.getenv("ANISEED_ENV_COMPILE")) and fs["glob-dir-newer?"](fnl_dir, lua_dir, glob_expr, _3_)) then
+        fennel["add-path"]((fnl_dir .. "/?.fnl"))
+        compile.glob(glob_expr, fnl_dir, lua_dir, opts0)
       end
       return quiet_require((opts0.module or "init"))
     end
